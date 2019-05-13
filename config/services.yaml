@@ -1,0 +1,53 @@
+# This file is the entry point to configure your own services.
+# Files in the packages/ subdirectory configure your dependencies.
+
+# Put parameters here that don't need to change on each machine where the app is deployed
+# https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
+
+imports:
+    - { resource: 'api_adapters.yaml' }
+parameters:
+
+services:
+    # default configuration for services in *this* file
+    _defaults:
+        autowire: true      # Automatically injects dependencies in your services.
+        autoconfigure: true # Automatically registers your services as commands, event subscribers, etc.
+
+    GuzzleHttp\ClientInterface:
+        factory: 'App\Services\GuzzleClient\GuzzleClientFactory:factoryMethod'
+
+    App\:
+        resource: '../src/*'
+        exclude: '../src/{DependencyInjection,Entity,Migrations,Tests,Kernel.php}'
+
+    # controllers are imported separately to make sure services can be injected
+    # as action arguments even if you don't extend any base controller class
+    App\Controller\:
+        resource: '../src/Controller'
+        tags: ['controller.service_arguments']
+
+    App\Command\SyncBalanceCommand:
+        tags:
+            - { name: 'console.command', command: 'app:sync-balance' }
+        # ...
+
+    _instanceof:
+        App\Services\Wallet\ApiAdapters\AdapterInterface:
+            tags: [ !php/const App\Services\Wallet\ApiAdapters\AdapterChain::TAG_NAME]
+
+#    App\Services\Wallet\ApiAdapters\AbstractAdapter:
+#        abstract: true
+#        calls:
+#            - [setLogger, ['@logger']]
+#            - [setClient, ['@logger']]
+
+    App\Services\Wallet\ApiAdapters\ChainSoAdapter:
+        arguments: ['@GuzzleHttp\ClientInterface', '%env(CHAIN_SO_BASE_URL)%']
+        tags:
+            - { name: !php/const App\Services\Wallet\ApiAdapters\AdapterChain::TAG_NAME }
+
+    App\Services\Wallet\ApiAdapters\EtherscanAdapter:
+        arguments: ['@GuzzleHttp\ClientInterface','%env(ETHER_SCAN_BASE_URL)%', '%env(ETHER_SCAN_API_KEY)%']
+        tags:
+            - { name: !php/const App\Services\Wallet\ApiAdapters\AdapterChain::TAG_NAME }

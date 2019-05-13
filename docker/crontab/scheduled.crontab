@@ -1,0 +1,2 @@
+# min   hour    day     month   weekday command
+* * * * *  /usr/local/bin/php /home/www/bin/console app:sync-balance >> /home/www/var/log/cron.log 2>&1

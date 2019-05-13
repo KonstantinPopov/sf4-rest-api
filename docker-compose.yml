@@ -1,0 +1,40 @@
+version: '2'
+
+services:
+  web:
+    image: nginx
+    ports:
+      - 8080:80
+    volumes:
+      - ./docker/nginx/vhost.conf:/etc/nginx/conf.d/000-default.conf
+      - ./:/home/www:cached
+    links:
+      - php
+
+    container_name: api_server
+
+  php:
+    build: ./docker
+    volumes:
+      - ./:/home/www:cached
+    links:
+      - db
+    environment:
+      - DATABASE_URL=mysql://root:rootpass@db/rest_api
+    env_file:
+      - ./.env.local
+    container_name: api_core
+
+  db:
+    image: mariadb:10
+    volumes:
+      - mysql-data:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=rootpass
+    ports:
+      - "3306:3306"
+    container_name: api_db
+
+volumes:
+  mysql-data:
+    driver: local

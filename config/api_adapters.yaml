@@ -1,0 +1,15 @@
+parameters:
+    env(CHAIN_SO_BASE_URL): 'https://chain.so/api/v2'
+    env(ETHER_SCAN_BASE_URL): 'https://api.etherscan.io'
+    env(ETHER_SCAN_API_KEY): ''
+
+services:
+#    _instanceof:
+#        App\Services\Wallet\ApiAdapters\AdapterInterface:
+#            tags: [ !php/const App\Services\Wallet\ApiAdapters\AdapterChain::TAG_NAME]
+#
+#
+#    App\Services\Wallet\ApiAdapters\ChainSoAdapter:
+#        arguments: ['@GuzzleHttp\ClientInterface',  '%env(CHAIN_SO_BASE_URL)%']
+#        tags:
+#            - { name: app.wallet_external_api }
