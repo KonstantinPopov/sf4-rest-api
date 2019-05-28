@@ -1,6 +1,7 @@
 #Api for watch on your crypto wallets
 you can add wallets to your bookmarks and watch on balance
 
+
 Requirements
 ------------
 - [Docker][1]
@@ -9,8 +10,8 @@ Need to do before start container
 ---------------------------------
 * clone repository `git clone git@github.com:KonstantinPopov/sf4-rest-api.git /local/path/application`
 * go to the folder with application `cd /local/path/application` 
-* define local environment 
-* copy `.env` into `.env.local`. eg for dev env:
+* copy `.env` into `.env.local`.  `cp .env .env.local`:
+* define local environment. eg for dev: 
 ```
 APP_SECRET=ce54664062276629e7f53870faf2a52a
 XDEBUG_CONFIG=remote_host=docker.for.mac.localhost
@@ -142,6 +143,12 @@ service:
     }
 ```
 
+
+What should to do
+-----------------
+* add new AdapterMultiple interface that can pull multiple balance in one request
+* throtler that will be handle call api limits that have api providers
+* async calls (in queue)
 
 [1]: https://www.docker.com
 [2]: https://www.jetbrains.com/help/phpstorm/servers.html
