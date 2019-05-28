@@ -4,11 +4,12 @@ namespace App\Services\Wallet\ApiAdapters;
 
 use App\Entity\Wallet;
 use App\Exception\WrongApiResponseException;
+use GuzzleHttp\ClientInterface;
 
 /**
  * Use this adapter in tests
  */
-class NullAdapter extends AbstractAdapter
+class NullAdapter // extends AbstractAdapter
 {
     const SLUG = 'null-api-adapter';
 

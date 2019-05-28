@@ -33,7 +33,9 @@ Development
 * define 'rest-api.local' [server][2] in your ide
 * xdebug enable, set up environment for xdebug(look above)
 * set up docker php interpreter
-* debug in test, add extra parameters to your interpreter in ide `-dxdebug.remote_enable=1 -dxdebug.remote_port=9000 -dxdebug.remote_host=docker.for.mac.localhost -dxdebug.remote_mode=jit` 
+* debug in test, add extra parameters to your interpreter in ide 
+`-dxdebug.remote_enable=1 -dxdebug.remote_port=9000 -dxdebug.remote_host=docker.for.mac.localhost -dxdebug.remote_mode=jit`
+and choice docker php interpreter as default interpreter, And set up path to autoload file and path phpunit.xml.dist
 * enable phpmd, phpcs, php-cs-fixer in your ide config
 
 How to use

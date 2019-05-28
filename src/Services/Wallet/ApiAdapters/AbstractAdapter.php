@@ -9,11 +9,10 @@ use GuzzleHttp\Psr7\Response;
 use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response as HttpResponsne;
+use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
-    const SLUG = null;
 
     protected const ENDPOINT = null;
 
@@ -88,7 +87,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected function parseResponse(Response $response)
     {
-        if ($response->getStatusCode() !== HttpResponsne::HTTP_OK) {
+        if ($response->getStatusCode() !== HttpResponse::HTTP_OK) {
             throw new WrongApiResponseException();
         }
 

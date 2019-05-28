@@ -36,12 +36,12 @@ class FetchStatisticHandler implements FetchStatisticHandlerInterface
         $apiAdapter = $this->apiAdapterChains->getAdapter($apiAdapterSlug);
 
         if (!$apiAdapter instanceof AdapterInterface) {
-            throw new AdapterNotFoundException(sprintf('Api adapter "%s" not supported', $apiAdapterSlug()));
+            throw new AdapterNotFoundException(sprintf('Api adapter "%s" not supported', $apiAdapterSlug));
         }
         $balanceValue = $apiAdapter->fetchBalance($wallet);
         $this->logger->info('Fetch statistic', [
             'wallet' => $wallet->__toString(),
-            'api_adapter' => $apiAdapter,
+            'api_adapter' => $apiAdapter::SLUG,
         ]);
 
         $balance = new BalanceLog();
