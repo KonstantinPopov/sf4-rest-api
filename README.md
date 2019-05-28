@@ -20,7 +20,7 @@ APP_ENV=dev
 ETHER_SCAN_API_KEY='DSF46D4G1FCVQ9WDQWU4CFRQYMN9ANXVQ6'
 MYSQL_ROOT_PASSWORD=rootpass
 DB_NAME=rest_api
-DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@db/${DB_NAME}
+DATABASE_URL=mysql://root:rootpass@db/rest_api
 ```
 * customize your environment variable
 
@@ -143,6 +143,11 @@ service:
     }
 ```
 
+
+Troubleshooting
+---------------
+* if db host not resolved put db to your host file
+* if you changed some environment or config should rebuild image `docker-compose build` 
 
 What should to do
 -----------------

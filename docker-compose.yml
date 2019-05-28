@@ -10,7 +10,6 @@ services:
       - ./:/home/www:cached
     links:
       - php
-
     container_name: api_server
 
   php:
@@ -19,8 +18,6 @@ services:
       - ./:/home/www:cached
     links:
       - db
-    environment:
-      - DATABASE_URL=mysql://root:rootpass@db/rest_api
     env_file:
       - ./.env.local
     container_name: api_core
