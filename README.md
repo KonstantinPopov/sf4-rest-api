@@ -87,6 +87,15 @@ class NewAdapter extends AbstractAdapter
   
       protected const ENDPOINT = '/get_balance/{ADDRESS}';
   
+      /** @var string */
+      private $apiKey;
+  
+      public function __construct(ClientInterface $client, string $baseUrl, string $apiKey = '')
+      {
+          $this->apiKey = $apiKey;
+          parent::__construct($client, $baseUrl);
+      }
+      
       /**
        * {@inheritDoc}
        */
