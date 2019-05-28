@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\GuzzleClient;
+namespace App\Tests\Unit\Services\GuzzleClient;
 
 use App\Services\GuzzleClient\GuzzleClientFactory;
 use GuzzleHttp\ClientInterface;

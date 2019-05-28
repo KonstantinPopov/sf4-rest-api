@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Tests\Unit\Wallet;
+namespace App\Tests\Unit\Services\Wallet;
 
 use App\Entity\BalanceLog;
 use App\Entity\Currency;
