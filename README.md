@@ -146,7 +146,6 @@ service:
 
 Troubleshooting
 ---------------
-* if db host not resolved put db to your host file
 * if you changed some environment or config should rebuild image `docker-compose build` 
 
 What should to do

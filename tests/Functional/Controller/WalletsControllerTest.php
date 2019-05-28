@@ -8,15 +8,18 @@ use Symfony\Component\HttpFoundation\Response;
 class WalletsControllerTest extends WebTestCase
 {
 
-    public function testListActionAuthenticationFailed()
+    public function testAuthenticationFailed()
     {
         $client = static::createClient();
-        $client->request('GET','http://127.0.0.1:8080/api/wallets');
 
+        $client->request('GET','http://127.0.0.1:8080/api/wallets');
+        $this->assertSame(Response::HTTP_UNAUTHORIZED, $client->getResponse()->getStatusCode());
+        $this->assertJsonStringEqualsJsonString('{"message":"Authentication Required"}', $client->getResponse()->getContent());
+
+        $client->request('GET','http://127.0.0.1:8080/api/wallet/385cR5DM96n1HvBDMzLHPYcw89fZAXULJP');
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString('{"message":"Authentication Required"}', $client->getResponse()->getContent());
     }
-
 
     public function testListAction()
     {
@@ -28,7 +31,62 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
+                'HTTP_ACCEPT' => 'application/json'
             ]
         );
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $body = json_decode($client->getResponse()->getContent(), true);
+        $element = current($body);
+        $this->assertArrayHasKey('currency', $element);
+        $this->assertArrayHasKey('balance', $element);
+        $this->assertArrayHasKey('balance_changed_at', $element);
+        $this->assertArrayHasKey('address', $element);
+    }
+
+    public function testWatchBalanceListAction()
+    {
+        $client = static::createClient();
+        $client->request(
+            'GET',
+            'http://127.0.0.1:8080/api/wallet/385cR5DM96n1HvBDMzLHPYcw89fZAXULJP',
+            [],
+            [],
+            [
+                'HTTP_X_AUTH_TOKEN' => '1234567890',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $body = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('currency', $body);
+        $this->assertArrayHasKey('balance', $body);
+        $this->assertArrayHasKey('balance_changed_at', $body);
+        $this->assertArrayHasKey('address', $body);
+        $this->assertArrayHasKey('balance_log', $body);
+    }
+
+    public function testWatchBalanceListActionNotExistWallet()
+    {
+        $client = static::createClient();
+        $client->request(
+            'GET',
+            'http://127.0.0.1:8080/api/wallet/no_exist',
+            [],
+            [],
+            [
+                'HTTP_X_AUTH_TOKEN' => '1234567890',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_NO_CONTENT, $client->getResponse()->getStatusCode());
+    }
+
+    public function testAddWalletAction()
+    {
+        $this->assertTrue(true);
+//        ......
     }
 }
