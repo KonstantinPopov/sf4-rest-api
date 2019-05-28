@@ -2,11 +2,11 @@
 
 namespace App\Entity;
 
+use Countable;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use JMS\Serializer\Annotation as Serializer;
-
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\WalletRepository")
@@ -35,6 +35,8 @@ class Wallet
     /**
      * @var Currency
      *
+     * @Assert\NotBlank()
+     *
      * @ORM\ManyToOne(targetEntity="App\Entity\Currency")
      * @ORM\JoinColumn(name="currency_id", referencedColumnName="code")
      *
@@ -44,13 +46,16 @@ class Wallet
     private $currency;
 
     /**
+     * @var float
+     *
+     * @Assert\NotBlank()
+     *
      * @ORM\Column(type="decimal", precision=30, scale=18)
      *
      * @Serializer\Expose()
      * @Serializer\Type("float")
      * @Serializer\Groups({"wallet:show", "wallet:list"})
      *
-     * @var float
      */
     private $balance;
 
@@ -76,13 +81,15 @@ class Wallet
     private $balanceLog;
 
     /**
+     * @var string
+     *
      * @ORM\Column(type="string", unique=true)
+     *
+     * @Assert\NotBlank()
      *
      * @Serializer\Expose()
      * @Serializer\Type("string")
      * @Serializer\Groups({"wallet:show", "wallet:list"})
-     *
-     * @var string
      */
     private $address;
 
@@ -112,9 +119,9 @@ class Wallet
     }
 
     /**
-     * @return User[]
+     * @return Countable
      */
-    public function getUsers(): Collection
+    public function getUsers(): Countable
     {
         return $this->users;
     }

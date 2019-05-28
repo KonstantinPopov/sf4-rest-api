@@ -6,6 +6,7 @@ use App\Entity\Wallet;
 use App\Exception\WrongApiResponseException;
 use GuzzleHttp\ClientInterface;
 use GuzzleHttp\Psr7\Response;
+use GuzzleHttp\Exception\GuzzleException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response as HttpResponsne;
@@ -34,8 +35,8 @@ abstract class AbstractAdapter implements AdapterInterface
     /**
      * @param Wallet $wallet
      *
-     * @return array
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @return float
+     * @throws GuzzleException
      */
     public function fetchBalance(Wallet $wallet): float
     {
@@ -106,7 +107,6 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param string $url
      * @param array  $search
      * @param array  $replace
      *
@@ -132,7 +132,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param array  $options
      *
      * @return ResponseInterface
-     * @throws \GuzzleHttp\Exception\GuzzleException
+     * @throws GuzzleException
      */
     protected function apiCall(string $url, string $method = Request::METHOD_GET, array $options): ResponseInterface
     {

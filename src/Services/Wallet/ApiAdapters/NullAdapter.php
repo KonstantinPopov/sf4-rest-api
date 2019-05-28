@@ -3,12 +3,12 @@
 namespace App\Services\Wallet\ApiAdapters;
 
 use App\Entity\Wallet;
-use Psr\Http\Message\ResponseInterface;
+use App\Exception\WrongApiResponseException;
 
 /**
  * Use this adapter in tests
  */
-class NullAdapter //extends AbstractAdapter
+class NullAdapter extends AbstractAdapter
 {
     const SLUG = 'null-api-adapter';
 
@@ -17,7 +17,7 @@ class NullAdapter //extends AbstractAdapter
     /**
      * {@inheritDoc}
      */
-    protected function getEndpointParametersByWallet(Wallet $wallet): array
+    protected function getEndpointOptionsByWallet(Wallet $wallet): array
     {
         return [['{ADDRESS}'], [$wallet->getAddress()], ];
     }
@@ -25,8 +25,12 @@ class NullAdapter //extends AbstractAdapter
     /**
      * {@inheritDoc}
      */
-    protected function getBalanceFromResponse(ResponseInterface $response)
+    protected function mappingResponseBalance($responseData)
     {
+        if (is_null(1)) {
+            throw new WrongApiResponseException('Wrong Response. Cant map response.');
+        }
+
         return 0;
     }
 }

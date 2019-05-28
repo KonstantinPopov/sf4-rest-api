@@ -27,8 +27,14 @@ DATABASE_URL=mysql://root:${MYSQL_ROOT_PASSWORD}@db/${DB_NAME}
 Installation
 ------------
 * `docker-compose up`
-* define 'rest-api.local' [server][2] in your ide for enable xdebug
 
+Development
+----------
+* define 'rest-api.local' [server][2] in your ide
+* xdebug enable, set up environment for xdebug(look above)
+* set up docker php interpreter
+* debug in test, add extra parameters to your interpreter in ide `-dxdebug.remote_enable=1 -dxdebug.remote_port=9000 -dxdebug.remote_host=docker.for.mac.localhost -dxdebug.remote_mode=jit` 
+* enable phpmd, phpcs, php-cs-fixer in your ide config
 
 How to use
 ----------
@@ -75,34 +81,29 @@ use Psr\Http\Message\ResponseInterface;
  */
 class NewAdapter extends AbstractAdapter
 {
-    const SLUG = 'null-api-adapter';
-
-    protected const ENDPOINT = '/get_balance/{ADDRESS}';
-
-    /** @var string */
-    private $apiKey;
-    
-    public function __construct(ClientInterface $client, string $baseUrl, string $apiKey = '')
-    {
-        $this->apiKey = $apiKey;
-        parent::__construct($client, $baseUrl);
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getEndpointParametersByWallet(Wallet $wallet): array
-    {
-        return [['{ADDRESS}'], [$wallet->getAddress()], ];
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    protected function getBalanceFromResponse(ResponseInterface $response)
-    {
-        return 0;
-    }
+      const SLUG = 'new-api-adapter';
+  
+      protected const ENDPOINT = '/get_balance/{ADDRESS}';
+  
+      /**
+       * {@inheritDoc}
+       */
+      protected function getEndpointOptionsByWallet(Wallet $wallet): array
+      {
+          return [['{ADDRESS}'], [$wallet->getAddress()], ];
+      }
+  
+      /**
+       * {@inheritDoc}
+       */
+      protected function mappingResponseBalance($responseData)
+      {
+          if (is_null($balance = $responseData['balance'] ?? null)) {
+              throw new WrongApiResponseException('Wrong Response. Cant map response.');
+          }
+  
+          return $responseData['balance];
+      }
 }
 ```
 

@@ -15,6 +15,7 @@ use Nelmio\ApiDocBundle\Annotation\Model;
 use Swagger\Annotations as SWG;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 
 class WalletsController extends AbstractFOSRestController
 {
@@ -55,11 +56,10 @@ class WalletsController extends AbstractFOSRestController
      */
     public function listAction()
     {
-        return $this->getWalletService()->getWalletsByUser($this->getUser());
+        return $this->getWalletRepository()->findWalletsByUser($this->getUser());
     }
 
     /**
-     *
      * @Get("/api/wallet/{address}", name="api_wallet_ballance", requirements={"address"="\w+"})
      *
      * @SWG\Tag(name="wallets")
@@ -164,18 +164,21 @@ class WalletsController extends AbstractFOSRestController
         try {
             $currency = strtoupper($request->request->get('currency'));
             $currency = $this->get(CurrencyRepository::class)->find($currency);
+
             if (!$currency instanceof Currency) {
-                throw new \RangeException();
+                $this->createNotFoundException('currency not supported, pls check available currencies');
             }
+
             if (!$address = $request->request->get('address')) {
-                throw new \RangeException();
+               throw new BadRequestHttpException('address is required');
             }
+
             $this->getWalletService()->addWallet($this->getUser(), $currency, $address);
         } catch (\Throwable $e) {
             return $this->handleView(
                 $this->view(['status' => 'failed', 'error' => $e->getMessage()],
                     Response::HTTP_BAD_REQUEST
-                ));
+            ));
         }
 
         return $this->handleView($this->view(['status' => 'success'], Response::HTTP_CREATED));

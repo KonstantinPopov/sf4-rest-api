@@ -3,6 +3,7 @@
 namespace App\Services\Wallet\ApiAdapters;
 
 use App\Entity\Wallet;
+use App\Exception\WrongApiResponseException;
 use GuzzleHttp\ClientInterface;
 
 class EtherscanAdapter extends AbstractAdapter
@@ -34,7 +35,7 @@ class EtherscanAdapter extends AbstractAdapter
     protected function mappingResponseBalance($responseData)
     {
         if (is_null($balance = $responseData['result'] ?? null)) {
-            throw new \RuntimeException('Wrong Response');
+            throw new WrongApiResponseException('Wrong Response. Cant map response.');
         }
 
         return $balance ? $balance/pow(10, 18) : 0;

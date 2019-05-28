@@ -9,10 +9,11 @@ use App\Entity\Wallet;
 use App\Exception\SyncBalanceException;
 use App\Repository\CurrencyRepository;
 use App\Repository\WalletRepository;
-use App\Services\Wallet\ApiAdapters\AdapterChain;
 use App\Services\Wallet\FetchStatisticHandlers\FetchStatisticHandlerInterface;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\EntityNotFoundException;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\Validator\Exception\ValidatorException;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 class WalletService
@@ -44,18 +45,29 @@ class WalletService
 
     /**
      * @param User            $user
-     * @param Currency|string $currency
+     * @param Currency|string $currency Currency or Currency code
      * @param string          $address
      *
+     * @return Wallet
      * @throws \Doctrine\ORM\ORMException
      */
-    public function addWallet(User $user, $currency, string $address)
+    public function addWallet(User $user, $currency, string $address): Wallet
     {
-        if (!$currency instanceof Currency) {
+        if (is_string($currency)) {
+            $currencyCode = $currency;
             $currency = $this->getCurrencyRepository()->find($currency);
         }
+
+        if (!$currency instanceof Currency) {
+            throw new EntityNotFoundException(sprintf('Currency with code %s not found', $currencyCode ?? ''));
+        }
+
         $wallet = $this->getWalletRepository()->creatNewWallet($user, $currency, $address);
-        $this->validator->validate($wallet);
+        $errors = $this->validator->validate($wallet);
+        if ($errors->count()) {
+            throw new ValidatorException($errors->__toString());
+        }
+
         try {
             $balance = $this->fetchBalance($wallet);
             $this->em->persist($balance);
@@ -64,10 +76,12 @@ class WalletService
         }
 
         $this->em->flush();
+
+        return $wallet;
     }
 
     /**
-     * @param Wallet[] $wallets
+     * @param Wallet|null $wallet
      */
     public function syncBalance(Wallet $wallet = null)
     {
@@ -90,25 +104,21 @@ class WalletService
                 ]);
             }
 
-        $this->em->flush();
-        if ($e instanceof \Throwable) {
-            throw new SyncBalanceException('Some wallets wasn\'t synced');
+            $this->em->flush();
+            if ($e instanceof \Throwable) {
+                throw new SyncBalanceException('Some wallets wasn\'t synced');
+            }
         }
-    }}
-
-    protected function fetchBalance(Wallet $wallet): BalanceLog
-    {
-        return $this->fetchStatisticHandler->getBalanceByWallet($wallet);
     }
 
     /**
-     * @param User $user
+     * @param Wallet $wallet
      *
-     * @return mixed
+     * @return BalanceLog
      */
-    public function getWalletsByUser(User $user)
+    protected function fetchBalance(Wallet $wallet): BalanceLog
     {
-        return $this->getWalletRepository()->findWalletsByUser($user);
+        return $this->fetchStatisticHandler->getBalanceByWallet($wallet);
     }
 
     /**
@@ -122,7 +132,7 @@ class WalletService
     /**
      * @return CurrencyRepository
      */
-    private function getCurrencyRepository(): Currency
+    private function getCurrencyRepository(): CurrencyRepository
     {
         return $this->em->getRepository(Currency::class);
     }

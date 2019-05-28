@@ -9,7 +9,6 @@ use App\Services\Wallet\ApiAdapters\ChainSoAdapter;
 use App\Services\Wallet\ApiAdapters\EtherscanAdapter;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
-use Doctrine\ORM\EntityManager;
 
 class AppFixtures extends Fixture
 {

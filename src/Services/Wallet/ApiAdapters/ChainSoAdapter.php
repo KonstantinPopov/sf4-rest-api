@@ -3,6 +3,7 @@
 namespace App\Services\Wallet\ApiAdapters;
 
 use App\Entity\Wallet;
+use App\Exception\WrongApiResponseException;
 use Psr\Http\Message\ResponseInterface;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -29,7 +30,7 @@ class ChainSoAdapter extends AbstractAdapter
     protected function mappingResponseBalance($responseData)
     {
         if (is_null($balance = $responseData['data']['confirmed_balance'] ?? null)) {
-            throw new \RuntimeException('Wrong Response');
+            throw new WrongApiResponseException('Wrong Response. Cant map response.');
         }
 
         return $balance;
