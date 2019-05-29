@@ -86,7 +86,38 @@ class WalletsControllerTest extends WebTestCase
 
     public function testAddWalletAction()
     {
-        $this->assertTrue(true);
-//        ......
+        $client = static::createClient();
+        $client->request(
+            'POST',
+            'http://127.0.0.1:8080/api/wallets',
+            [
+                'address' => '3E4ozZLgUdYdQoiJhS6NPK1XVSf8dKix2U',
+                'currency' => 'btc',
+            ],
+            [],
+            [
+                'HTTP_X_AUTH_TOKEN' => '1234567890',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_CREATED, $client->getResponse()->getStatusCode());
+        $this->assertJsonStringEqualsJsonString('{ "status": "success"}', $client->getResponse()->getContent());
+
+        $client->request(
+            'GET',
+            'http://127.0.0.1:8080/api/wallet/3E4ozZLgUdYdQoiJhS6NPK1XVSf8dKix2U',
+            [],
+            [],
+            [
+                'HTTP_X_AUTH_TOKEN' => '1234567890',
+                'HTTP_ACCEPT' => 'application/json'
+            ]
+        );
+
+        $this->assertSame(Response::HTTP_OK, $client->getResponse()->getStatusCode());
+        $body = json_decode($client->getResponse()->getContent(), true);
+        $this->assertArrayHasKey('address', $body);
+        $this->assertEquals('3E4ozZLgUdYdQoiJhS6NPK1XVSf8dKix2U', $body['address']);
     }
 }
