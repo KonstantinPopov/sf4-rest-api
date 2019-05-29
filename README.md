@@ -52,7 +52,7 @@ Sync Balance:
 * automatically runs every minute, defined command in scheduled file: `docker/crontab/scheduled.crontab`
 * stop cron `docker-compose exec php service cron stop` 
 * start cron `docker-compose exec php service cron start` 
-###Manual run
+### Manual run
 `docker-compose exec php bin/console app:sync-balance`
 
 
@@ -79,9 +79,6 @@ namespace App\Services\Wallet\ApiAdapters;
 use App\Entity\Wallet;
 use Psr\Http\Message\ResponseInterface;
 
-/**
- * Use this adapter in tests
- */
 class NewAdapter extends AbstractAdapter
 {
       const SLUG = 'new-api-adapter';
@@ -114,7 +111,7 @@ class NewAdapter extends AbstractAdapter
               throw new WrongApiResponseException('Wrong Response. Cant map response.');
           }
   
-          return $responseData['balance];
+          return $$balance;
       }
 }
 ```
