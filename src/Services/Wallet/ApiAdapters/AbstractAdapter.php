@@ -13,16 +13,15 @@ use Symfony\Component\HttpFoundation\Response as HttpResponse;
 
 abstract class AbstractAdapter implements AdapterInterface
 {
-
     protected const ENDPOINT = null;
 
-    /** @var ClientInterface  */
+    /** @var ClientInterface */
     protected $httpClient;
 
-    /** @var string  */
+    /** @var string */
     protected $baseUrl;
 
-    /** @var string  */
+    /** @var string */
     protected $fetchBalanceMethod;
 
     public function __construct(ClientInterface $client, string $baseUrl)
@@ -35,6 +34,7 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param Wallet $wallet
      *
      * @return float
+     *
      * @throws GuzzleException
      */
     public function fetchBalance(Wallet $wallet): float
@@ -45,7 +45,7 @@ abstract class AbstractAdapter implements AdapterInterface
         $options = static::getEndpointOptions();
 
         //api call
-        $response = $this->apiCall($url, static::getRequestMethod(), $options);
+        $response = $this->apiCall($url, $options, static::getRequestMethod());
         $responseData = $this->parseResponse($response);
 
         $balance = $this->mappingResponseBalance($responseData);
@@ -64,7 +64,7 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * define extra options for api call
+     * define extra options for api call.
      *
      * @param Wallet $wallet
      *
@@ -73,10 +73,11 @@ abstract class AbstractAdapter implements AdapterInterface
     abstract protected function getEndpointOptionsByWallet(Wallet $wallet): array;
 
     /**
-     * Define rules for fetching balance from response
+     * Define rules for fetching balance from response.
+     *
      * @param $responseData
      *
-     * @return string|array
+     * @return float
      */
     abstract protected function mappingResponseBalance($responseData);
 
@@ -87,7 +88,7 @@ abstract class AbstractAdapter implements AdapterInterface
      */
     protected function parseResponse(Response $response)
     {
-        if ($response->getStatusCode() !== HttpResponse::HTTP_OK) {
+        if (HttpResponse::HTTP_OK !== $response->getStatusCode()) {
             throw new WrongApiResponseException();
         }
 
@@ -106,15 +107,15 @@ abstract class AbstractAdapter implements AdapterInterface
     }
 
     /**
-     * @param array  $search
-     * @param array  $replace
+     * @param array $search
+     * @param array $replace
      *
      * @return string
      */
     protected function getAbsoluteUrl(array $search = [], array $replace = [])
     {
         $url = static::ENDPOINT;
-        if (strpos($url, '/') !== 0 && substr($this->baseUrl, -1) !== '/') {
+        if (0 !== strpos($url, '/') && '/' !== substr($this->baseUrl, -1)) {
             $url = '/'.$url;
         }
 
@@ -131,9 +132,10 @@ abstract class AbstractAdapter implements AdapterInterface
      * @param array  $options
      *
      * @return ResponseInterface
+     *
      * @throws GuzzleException
      */
-    protected function apiCall(string $url, string $method = Request::METHOD_GET, array $options): ResponseInterface
+    protected function apiCall(string $url, array $options, string $method = Request::METHOD_GET): ResponseInterface
     {
         return $this->httpClient->request($method, $url, $options);
     }

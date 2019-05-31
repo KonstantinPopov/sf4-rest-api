@@ -27,8 +27,8 @@ class Wallet
     /**
      * @ORM\ManyToMany(targetEntity="App\Entity\User", inversedBy="wallets")
      * @ORM\JoinTable(name="users_wallets")
+     *
      * @var User[]
-     * @Serializer\Exclude()
      */
     private $users;
 
@@ -55,7 +55,6 @@ class Wallet
      * @Serializer\Expose()
      * @Serializer\Type("float")
      * @Serializer\Groups({"wallet:show", "wallet:list"})
-     *
      */
     private $balance;
 
@@ -94,7 +93,7 @@ class Wallet
     private $address;
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public static function getDataStatisticAdapters()
     {
@@ -141,6 +140,7 @@ class Wallet
     {
         $this->users[] = $user;
     }
+
     /**
      * @return float
      */
@@ -223,5 +223,4 @@ class Wallet
     {
         $this->address = $address;
     }
-
 }

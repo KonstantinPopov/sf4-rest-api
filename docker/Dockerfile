@@ -15,7 +15,7 @@ COPY ./crontab/scheduled.crontab /var/spool/cron/crontabs/root
 COPY ./supervisord/supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 RUN chmod 0600 /var/spool/cron/crontabs/root
 RUN chown root:crontab /var/spool/cron/crontabs/root
-RUN touch /var/log/cron.log
+RUN touch /var/www/log/cron.log
 
 COPY ./php/xdebux.ini /usr/local/etc/php/conf.d/xdebug.ini
 RUN curl -sS https://getcomposer.org/installer | php -- --version=1.7.2 --install-dir=/usr/local/bin --filename=composer

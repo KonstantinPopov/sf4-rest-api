@@ -130,7 +130,7 @@ class WalletsController extends AbstractFOSRestController
      *              type="object",
      *              example={"currency"="BTC", "address"="1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX"},
      *              @SWG\Property(property="currency", type="string", enum={"BTC", "LTC", "ETH"}),
-     *              @SWG\Property(property="address", type="string", description="eg: 1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX")
+     *              @SWG\Property(property="address", type="string", description="eg:1F1tAaz5x1HUXrCNLbtMDqcw6o5GNn4xqX")
      *         )
      *     ),
      *     @SWG\Response(
@@ -170,15 +170,14 @@ class WalletsController extends AbstractFOSRestController
             }
 
             if (!$address = $request->request->get('address')) {
-               throw new BadRequestHttpException('address is required');
+                throw new BadRequestHttpException('address is required');
             }
 
             $this->getWalletService()->addWallet($this->getUser(), $currency, $address);
         } catch (\Throwable $e) {
             return $this->handleView(
-                $this->view(['status' => 'failed', 'error' => $e->getMessage()],
-                    Response::HTTP_BAD_REQUEST
-            ));
+                $this->view(['status' => 'failed', 'error' => $e->getMessage(), ], Response::HTTP_BAD_REQUEST)
+            );
         }
 
         return $this->handleView($this->view(['status' => 'success'], Response::HTTP_CREATED));
@@ -206,6 +205,6 @@ class WalletsController extends AbstractFOSRestController
      */
     private function getWalletRepository()
     {
-      return $this->get(WalletRepository::class);
+        return $this->get(WalletRepository::class);
     }
 }

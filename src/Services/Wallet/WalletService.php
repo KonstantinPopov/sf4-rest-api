@@ -35,8 +35,7 @@ class WalletService
         ValidatorInterface $validator,
         FetchStatisticHandlerInterface $fetchStatisticHandler,
         LoggerInterface $logger
-    )
-    {
+    ) {
         $this->fetchStatisticHandler = $fetchStatisticHandler;
         $this->validator = $validator;
         $this->em = $em;
@@ -49,6 +48,7 @@ class WalletService
      * @param string          $address
      *
      * @return Wallet
+     *
      * @throws \Doctrine\ORM\ORMException
      */
     public function addWallet(User $user, $currency, string $address): Wallet

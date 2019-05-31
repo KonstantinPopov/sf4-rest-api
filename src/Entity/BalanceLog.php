@@ -50,7 +50,6 @@ class BalanceLog
      */
     protected $updatedAt;
 
-
     public function getId(): ?int
     {
         return $this->id;

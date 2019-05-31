@@ -11,7 +11,7 @@ use Psr\Log\LoggerInterface;
 
 class FetchStatisticHandler implements FetchStatisticHandlerInterface
 {
-    /** @var AdapterChain  */
+    /** @var AdapterChain */
     private $apiAdapterChains;
 
     /** @var LoggerInterface */
@@ -27,6 +27,7 @@ class FetchStatisticHandler implements FetchStatisticHandlerInterface
      * @param Wallet $wallet
      *
      * @return BalanceLog
+     *
      * @throws \Throwable
      */
     public function getBalanceByWallet(Wallet $wallet): BalanceLog

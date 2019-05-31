@@ -7,16 +7,15 @@ use Symfony\Component\HttpFoundation\Response;
 
 class WalletsControllerTest extends WebTestCase
 {
-
     public function testAuthenticationFailed()
     {
         $client = static::createClient();
 
-        $client->request('GET','http://127.0.0.1:8080/api/wallets');
+        $client->request('GET', 'http://127.0.0.1:8080/api/wallets');
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString('{"message":"Authentication Required"}', $client->getResponse()->getContent());
 
-        $client->request('GET','http://127.0.0.1:8080/api/wallet/385cR5DM96n1HvBDMzLHPYcw89fZAXULJP');
+        $client->request('GET', 'http://127.0.0.1:8080/api/wallet/385cR5DM96n1HvBDMzLHPYcw89fZAXULJP');
         $this->assertSame(Response::HTTP_UNAUTHORIZED, $client->getResponse()->getStatusCode());
         $this->assertJsonStringEqualsJsonString('{"message":"Authentication Required"}', $client->getResponse()->getContent());
     }
@@ -31,7 +30,7 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/json',
             ]
         );
 
@@ -54,7 +53,7 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/json',
             ]
         );
 
@@ -77,7 +76,7 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/json',
             ]
         );
 
@@ -97,7 +96,7 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/json',
             ]
         );
 
@@ -111,7 +110,7 @@ class WalletsControllerTest extends WebTestCase
             [],
             [
                 'HTTP_X_AUTH_TOKEN' => '1234567890',
-                'HTTP_ACCEPT' => 'application/json'
+                'HTTP_ACCEPT' => 'application/json',
             ]
         );
 

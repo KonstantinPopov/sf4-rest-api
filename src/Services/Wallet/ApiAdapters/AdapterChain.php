@@ -9,6 +9,7 @@ class AdapterChain
      * @var AdapterInterface[]
      */
     private $adapters = [];
+
     /**
      * @param AdapterInterface $adapter
      * @param string           $alias
@@ -39,5 +40,4 @@ class AdapterChain
     {
         return $this->adapters;
     }
-
 }

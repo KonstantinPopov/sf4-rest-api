@@ -17,7 +17,8 @@ class User implements UserInterface
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
-     * @var integer
+     *
+     * @var int
      */
     private $id;
 
@@ -32,7 +33,6 @@ class User implements UserInterface
      * @ORM\Column(type="string")
      */
     protected $enabled = true;
-
 
     /**
      * @ORM\Column(type="string", unique=true)
@@ -140,23 +140,27 @@ class User implements UserInterface
      * {@inheritdoc}
      */
     public function getPassword()
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getSalt()
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function getUsername()
-    {}
+    {
+    }
 
     /**
      * {@inheritdoc}
      */
     public function eraseCredentials()
-    {}
+    {
+    }
 }

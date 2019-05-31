@@ -27,8 +27,6 @@ class Currency
      * @var string
      *
      * @ORM\Column(type="string", length=255)
-     *
-     * @Serializer\Exclude()
      */
     private $name;
 
@@ -36,8 +34,6 @@ class Currency
      * @var string
      *
      * @ORM\Column(type="string", length=64)
-     *
-     * @Serializer\Exclude()
      */
     private $apiAdapterSlug;
 

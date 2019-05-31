@@ -17,7 +17,7 @@ class AppFixtures extends Fixture
      */
     public function load(ObjectManager $manager)
     {
-        if(!in_array($_ENV['APP_ENV'] ?? null, ['dev', 'test'], true)) {
+        if (!in_array($_ENV['APP_ENV'] ?? null, ['dev', 'test'], true)) {
             return;
         }
 

@@ -27,6 +27,7 @@ class WalletRepository extends ServiceEntityRepository
      * @param string   $address
      *
      * @return Wallet
+     *
      * @throws \Doctrine\ORM\ORMException
      */
     public function creatNewWallet(User $user, Currency $currency, string $address)

@@ -19,10 +19,10 @@ class CurrencyRepository extends ServiceEntityRepository
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function find($id, $lockMode = null, $lockVersion = null)
     {
-        return $this->findOneBy(['code' => $id],null, null, $lockMode, $lockVersion);
+        return $this->findOneBy(['code' => $id], null, null, $lockMode, $lockVersion);
     }
 }

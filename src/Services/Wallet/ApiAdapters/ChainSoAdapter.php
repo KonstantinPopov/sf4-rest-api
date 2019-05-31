@@ -4,8 +4,6 @@ namespace App\Services\Wallet\ApiAdapters;
 
 use App\Entity\Wallet;
 use App\Exception\WrongApiResponseException;
-use Psr\Http\Message\ResponseInterface;
-use Symfony\Component\HttpFoundation\Response;
 
 class ChainSoAdapter extends AbstractAdapter
 {
@@ -14,18 +12,18 @@ class ChainSoAdapter extends AbstractAdapter
     protected const ENDPOINT = '/get_address_balance/{NETWORK}/{ADDRESS}';
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getEndpointOptionsByWallet(Wallet $wallet): array
     {
         return  [
             ['{NETWORK}', '{ADDRESS}'],
-            [$wallet->getCurrency()->getCode(), $wallet->getAddress()]
+            [$wallet->getCurrency()->getCode(), $wallet->getAddress()],
         ];
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function mappingResponseBalance($responseData)
     {

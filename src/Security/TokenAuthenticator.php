@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Security;
 
 use App\Entity\User;
@@ -43,7 +44,7 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     }
 
     /**
-     * @return null|UserInterface|void
+     * @return UserInterface|void|null
      */
     public function getUser($credentials, UserProviderInterface $userProvider)
     {
@@ -69,19 +70,19 @@ class TokenAuthenticator extends AbstractGuardAuthenticator
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
         $data = [
-            'message' => $this->getMessageKey()
+            'message' => $this->getMessageKey(),
         ];
 
         return new JsonResponse($data, Response::HTTP_FORBIDDEN);
     }
 
     /**
-     * Called when authentication is needed, but it's not sent
+     * Called when authentication is needed, but it's not sent.
      */
     public function start(Request $request, AuthenticationException $authException = null)
     {
         $data = [
-            'message' => 'Authentication Required'
+            'message' => 'Authentication Required',
         ];
 
         return new JsonResponse($data, Response::HTTP_UNAUTHORIZED);

@@ -22,13 +22,13 @@ class EtherscanAdapter extends AbstractAdapter
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     protected function getEndpointOptionsByWallet(Wallet $wallet): array
     {
         return  [
             ['{API_KEY}', '{ADDRESS}'],
-            [$this->apiKey, $wallet->getAddress()]
+            [$this->apiKey, $wallet->getAddress()],
         ];
     }
 
@@ -38,6 +38,6 @@ class EtherscanAdapter extends AbstractAdapter
             throw new WrongApiResponseException('Wrong Response. Cant map response.');
         }
 
-        return $balance ? $balance/pow(10, 18) : 0;
+        return $balance ? $balance / pow(10, 18) : 0;
     }
 }

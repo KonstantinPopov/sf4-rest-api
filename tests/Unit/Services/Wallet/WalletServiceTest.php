@@ -65,7 +65,7 @@ class WalletServiceTest extends TestCase
         $address = 'test_address';
 
         return [
-            [$user, $currency, $address]
+            [$user, $currency, $address],
         ];
     }
 
@@ -199,7 +199,7 @@ class WalletServiceTest extends TestCase
         $this->expectExceptionMessage('Currency with code BTC not found');
 
         $walletService->addWallet($user, $currencyCode, $address);
-        $this->assertTrue(false, 'We shouldn\'t check that');// shouldn't check this assert, throws exception above
+        $this->assertTrue(false, 'We shouldn\'t check that'); // shouldn't check this assert, throws exception above
     }
 
     public function testAddNewWalletNegativeValidationException()
@@ -249,7 +249,7 @@ class WalletServiceTest extends TestCase
         $this->expectExceptionMessage('test error');
 
         $walletService->addWallet($user, $currency, $address);
-        $this->assertTrue(false, 'We shouldn\'t check that');// shouldn't check this assert, throws exception above
+        $this->assertTrue(false, 'We shouldn\'t check that'); // shouldn't check this assert, throws exception above
     }
 
     public function testAddNewWalletFetchBalanceException()

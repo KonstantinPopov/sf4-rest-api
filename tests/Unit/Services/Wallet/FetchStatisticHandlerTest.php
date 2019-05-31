@@ -26,7 +26,6 @@ class FetchStatisticHandlerTest extends TestCase
         parent::setUp();
         $this->adapterChainMock = $this->createMock(AdapterChain::class);
         $this->loggerMock = $this->createMock(LoggerInterface::class);
-
     }
 
     public function testNewInstance()
@@ -49,7 +48,7 @@ class FetchStatisticHandlerTest extends TestCase
         $currency->setApiAdapterSlug(AdapterInterface::SLUG);
 
         return [
-            [$wallet,]
+            [$wallet],
         ];
     }
 
@@ -105,6 +104,6 @@ class FetchStatisticHandlerTest extends TestCase
         $fetchStatisticHandler = new FetchStatisticHandler($this->adapterChainMock, $this->loggerMock);
         $fetchStatisticHandler->getBalanceByWallet($wallet);
 
-        $this->assertFalse(true);// won't be check
+        $this->assertFalse(true); // won't be check
     }
 }

@@ -31,7 +31,7 @@ class SyncBalanceCommandTest extends KernelTestCase
 
         $command = $application->find('app:sync-balance');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName(),]);
+        $commandTester->execute(['command' => $command->getName()]);
         $output = $commandTester->getDisplay();
 
         $this->assertStringContainsString('balance was synced', $output);
@@ -64,7 +64,7 @@ class SyncBalanceCommandTest extends KernelTestCase
 
         $command = $application->find('app:sync-balance');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName(), 'wallet' => 'test-address',]);
+        $commandTester->execute(['command' => $command->getName(), 'wallet' => 'test-address']);
         $output = $commandTester->getDisplay();
 
         $this->assertStringContainsString('balance was synced', $output);
@@ -91,7 +91,7 @@ class SyncBalanceCommandTest extends KernelTestCase
 
         $command = $application->find('app:sync-balance');
         $commandTester = new CommandTester($command);
-        $commandTester->execute(['command' => $command->getName(), 'wallet' => 'test-address',]);
+        $commandTester->execute(['command' => $command->getName(), 'wallet' => 'test-address']);
         $output = $commandTester->getDisplay();
 
         $this->assertStringContainsString('Nothing synced', $output);
@@ -122,7 +122,7 @@ class SyncBalanceCommandTest extends KernelTestCase
         $commandTester = new CommandTester($command);
 
         $this->expectExceptionObject($exception);
-        $commandTester->execute(['command' => $command->getName(),]);
+        $commandTester->execute(['command' => $command->getName()]);
 
         $this->assertTrue(false); // won't be check
     }

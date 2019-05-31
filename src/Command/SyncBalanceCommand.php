@@ -59,7 +59,7 @@ class SyncBalanceCommand extends Command
                 $this->walletService->syncBalance();
             }
 
-            $output->writeln((new \DateTime())->format(\DateTimeInterface::ATOM) . ' - balance was synced');
+            $output->writeln((new \DateTime())->format(\DateTimeInterface::ATOM).' - balance was synced');
         } catch (\Throwable $e) {
             $this->logger->error('Balance not synced', [
                 'error' => $e->getMessage(),
